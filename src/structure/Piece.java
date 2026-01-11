@@ -1,19 +1,14 @@
 package structure;
 
 public class Piece {
-    private Player owner;
-    private Integer position;
+    private boolean isWhite;
 
-    public Piece(Player owner) {
-        this.owner = owner;
-        this.position = null;
+    public Piece(boolean isWhite) {
+        this.isWhite = isWhite;
     }
 
     public String getSymbol() {
-        return owner.isWhite() ? "⚪" : "⚫"; // W = White, B = Black
+        return isWhite ? "⚪" : "⚫";
     }
-
-    public Player getOwner() { return owner; }
-    public Integer getPosition() { return position; }
-    public void setPosition(Integer position) { this.position = position; }
+    
 }

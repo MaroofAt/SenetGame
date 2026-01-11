@@ -9,12 +9,12 @@ public class Cell {
         this.number = number;
         this.piece = null;
         this.special = switch (number) {
-            case 15 -> "📍";
-            case 26 -> "🪸"; // "📍📍📍";
-            case 27 -> "🌊";
-            case 28 -> "3️⃣"; // "🦢";
-            case 29 -> "2️⃣"; // "🚶‍♂️🚶‍♂️";
-            case 30 -> "⭕";
+            case 14 -> "📍";
+            case 25 -> "🪸"; // "📍📍📍";
+            case 26 -> "🌊";
+            case 27 -> "3️⃣"; // "🦢";
+            case 28 -> "2️⃣"; // "🚶‍♂️🚶‍♂️";
+            case 29 -> "⭕";
             default -> null;
         };
     }
@@ -31,9 +31,9 @@ public class Cell {
 
     public int getNumber() { return number; }
 
-    public Cell deepcopy(){
-        Cell new_cell = new Cell(this.number);
-        new_cell.piece = this.piece.deepcopy();
-        return new_cell;
-    }
+//    public Cell deepcopy(){
+//        Cell new_cell = new Cell(this.number);
+//        new_cell.piece = this.piece.deepcopy();
+//        return new_cell;
+//    }
 }

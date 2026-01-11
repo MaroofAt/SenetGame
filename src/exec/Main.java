@@ -1,7 +1,6 @@
 package exec;
 
 import structure.Board;
-import structure.BoardPrinter;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,7 +9,7 @@ public class Main {
         System.out.println("Initializing Senet board...\n");
 
         Board board = new Board();
-        BoardPrinter.printBoard(board);
+        System.out.println(board);
 
 //        System.out.println("structure.Board initialized successfully!");
     }
