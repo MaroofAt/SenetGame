@@ -3,13 +3,16 @@ package structure;
 import java.util.*;
 
 public class Board {
-    private Cell[] cells = new Cell[30];
+    protected Cell[] cells = new Cell[30];
 
     public Board() {
         for (int i = 0; i < 30; i++) {
             cells[i] = new Cell(i);
         }
         setupInitialPosition();
+    }
+    public Board(Cell[] cells) {
+        this.cells = cells;
     }
 
     private void setupInitialPosition() {
@@ -55,23 +58,7 @@ public class Board {
         probs.put(5, 1.0 / 16); // كلها فاتحة
         return probs;
     }
-    public void movePiece(int fromIndex, int steps) {
-        int toIndex= fromIndex+steps;
-        if(toIndex>30) return;
-        Cell fromCell=this.getCell(fromIndex);
-        Cell toCell=this.getCell(toIndex);
-        if (fromCell.isEmpty()) return;
-        Piece movingPiece= fromCell.getPiece();
-        fromCell.setPiece(null);
-        if(!toCell.isEmpty()) {
-            Piece other=toCell.getPiece();
-            toCell.setPiece(movingPiece);
-            fromCell.setPiece(other);
-        }
-        else {
-            toCell.setPiece(movingPiece);
-        }
-    }
+
 
     @Override
     public String toString() {

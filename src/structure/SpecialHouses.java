@@ -14,26 +14,26 @@ public class SpecialHouses {
         RULES.put(30, "isFreeSquare: إذا هبط حجر على هذا المربع، فإنه يمكن في الدور التالي خروج هذا الحجر بأي رمية، غير أنه إذا لم يُحرِّك في ذلك الدور، فسيُعاد إلى بيت البعث.");
     }
     public static boolean isStartSquare(int cellIndex) {
-        return cellIndex == 15;
+        return cellIndex == 14;
     }
 
     public static boolean isBarrierSquare(int cellIndex) {
-        return cellIndex == 26; }
+        return cellIndex == 25; }
 
     public static boolean isReturnSquare(int cellIndex) {
-        return cellIndex == 27;
+        return cellIndex == 26;
     }
 
     public static boolean isThreeSquare(int cellIndex) {
-        return cellIndex == 28;
+        return cellIndex == 27;
     }
 
     public static boolean isTwoSquare(int cellIndex) {
-        return cellIndex == 29;
+        return cellIndex == 28;
     }
 
     public static boolean isFreeSquare(int cellIndex) {
-        return cellIndex == 30;
+        return cellIndex == 29;
     }
 
     public static String getRule(int cellIndex) {
