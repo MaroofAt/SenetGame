@@ -18,4 +18,7 @@ public class Piece {
         return !isWhite;
     }
 
+    public boolean getSymbolBool(){
+        return isWhite;
+    }
 }
