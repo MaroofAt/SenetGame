@@ -4,15 +4,21 @@ import java.util.*;
 
 public class Board {
     protected Cell[] cells = new Cell[30];
+    protected int whiteScore;
+    protected int blackScore;
 
     public Board() {
         for (int i = 0; i < 30; i++) {
             cells[i] = new Cell(i);
         }
         setupInitialPosition();
+        this.whiteScore = 0;
+        this.blackScore = 0;
     }
     public Board(Cell[] cells) {
         this.cells = cells;
+        this.whiteScore = 0;
+        this.blackScore = 0;
     }
 
     private void setupInitialPosition() {
@@ -32,13 +38,13 @@ public class Board {
         return cells[number];
     }
 
-//    public Cell[] getCells(){
-//        Cell[] new_cells = new Cell[31];
-//        for(int i = 1 ; i < 31 ; i++){
-//            new_cells[i] = this.cells[i];
-//        }
-//        return new_cells;
-//    }
+    public Cell[] deepcopy_cells(){
+        Cell[] new_cells = new Cell[31];
+        for(int i = 1 ; i < 31 ; i++){
+            new_cells[i] = this.cells[i].deepcopy();
+        }
+        return new_cells;
+    }
 
     public int throwSticks(){
         Random rand = new Random();

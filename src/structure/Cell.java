@@ -31,9 +31,9 @@ public class Cell {
 
     public int getNumber() { return number; }
 
-//    public Cell deepcopy(){
-//        Cell new_cell = new Cell(this.number);
-//        new_cell.piece = this.piece.deepcopy();
-//        return new_cell;
-//    }
+    public Cell deepcopy(){
+        Cell new_cell = new Cell(this.number);
+        new_cell.piece = this.piece;
+        return new_cell;
+    }
 }
