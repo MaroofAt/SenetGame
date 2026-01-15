@@ -127,6 +127,7 @@ public class State extends Board{
         }
 
         System.out.println("State: State return_to_start_square: piece can't come back to any cell because all of them have pieces !!!!!!");
+        return null;
     }
 
     // returns Arraylist of String that represents a possible action: 1,5 || 10,20
@@ -201,6 +202,7 @@ public class State extends Board{
     //
     public ArrayList<State> generate_next_states(){
         //TODO
+        return null;
     }
 
     //
