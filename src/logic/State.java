@@ -59,8 +59,8 @@ public class State extends Board{
         }
 
         // making sure that the piece belongs to the same player
-        if(!new_state.cells[25].isEmpty() && toIndex != 25 && (new_state.cells[25].getPiece().isWhite() == isWhite))
-            new_state = return_to_start_square(new_state,25);
+//        if(!new_state.cells[25].isEmpty() && toIndex != 25 && (new_state.cells[25].getPiece().isWhite() == isWhite))
+//            new_state = return_to_start_square(new_state,25);
 
         if(!new_state.cells[27].isEmpty() && toIndex != 27 && (new_state.cells[27].getPiece().isWhite() == isWhite))
             new_state = return_to_start_square(new_state,27);
@@ -68,6 +68,7 @@ public class State extends Board{
         if(!new_state.cells[28].isEmpty() && toIndex != 28 && (new_state.cells[28].getPiece().isWhite() == isWhite))
             new_state = return_to_start_square(new_state,28);
 
+        new_state.parent = this;
         return new_state;
     }
     public State apply_action(String action){
@@ -76,19 +77,36 @@ public class State extends Board{
         return move_piece(piece_index , dest-piece_index);
     }
 
+    public boolean is_terminal(){
+        int black_pieces = 0;
+        int white_pieces = 0;
+        for(Cell cell: this.cells){
+            if(!cell.isEmpty()){
+                if(cell.getPiece().isWhite()){
+                    white_pieces += 1;
+                    if(black_pieces > 0) return false;
+                }else{
+                    black_pieces += 1;
+                    if(white_pieces > 0) return false;
+                }
+            }
+        }
+        if(white_pieces > 0 || black_pieces > 0) return false;
+        return true;
+    }
+
 
     // return bool whether is it a legal move or not
     public boolean can_move_piece_to(int piece_index, int steps){
 //        if (this.cells[piece_index].isEmpty()) return false;
         if (piece_index+steps > 29) return false;
-        else if (cells[piece_index+steps].getPiece().getSymbol() == cells[piece_index].getPiece().getSymbol()) return false;
+        else if (!cells[piece_index+steps].isEmpty() && cells[piece_index+steps].getPiece().getSymbol() == cells[piece_index].getPiece().getSymbol()) return false;
         else if (piece_index < 25 && piece_index+steps > 25) return false;
         else if (piece_index == 27 && steps != 3) return false;
         else if (piece_index == 28 && steps != 2) return false;
-        else if (cells[piece_index+steps].getPiece().getSymbol() != cells[piece_index].getPiece().getSymbol()) return true;
+        else if (!cells[piece_index+steps].isEmpty() && cells[piece_index+steps].getPiece().getSymbol() != cells[piece_index].getPiece().getSymbol()) return true;
         else if (this.cells[piece_index+steps].isEmpty()) return true;
         return true;
-        //TODO
     }
 
     // return the piece to start square or any empty cell before it (if it has piece on it)
@@ -98,7 +116,11 @@ public class State extends Board{
         int i = 14;
         while(i >= 0){
             if(state.cells[i].isEmpty()){
-                return state.move_piece(piece_index, i);
+//                return state.move_piece(piece_index, i-piece_index);
+                Piece piece = state.cells[piece_index].getPiece();
+                state.cells[piece_index].setPiece(null);
+                state.cells[i].setPiece(piece);
+                return state;
             }
             i--;
         }
@@ -106,7 +128,11 @@ public class State extends Board{
         i = 15;
         while(i <= 24){
             if(state.cells[i].isEmpty()){
-                return state.move_piece(piece_index, i);
+//                return state.move_piece(piece_index, i-piece_index);
+                Piece piece = state.cells[piece_index].getPiece();
+                state.cells[piece_index].setPiece(null);
+                state.cells[i].setPiece(piece);
+                return state;
             }
             i++;
         }
@@ -120,7 +146,11 @@ public class State extends Board{
         int i = 14;
         while(i >= 0){
             if(this.cells[i].isEmpty()){
-                return this.move_piece(piece_index, i);
+//                return this.move_piece(piece_index, i-piece_index);
+                Piece piece = this.cells[piece_index].getPiece();
+                this.cells[piece_index].setPiece(null);
+                this.cells[i].setPiece(piece);
+                return this;
             }
             i--;
         }
@@ -128,7 +158,11 @@ public class State extends Board{
         i = 15;
         while(i <= 24){
             if(this.cells[i].isEmpty()){
-                return this.move_piece(piece_index, i);
+//                return this.move_piece(piece_index, i-piece_index);
+                Piece piece = this.cells[piece_index].getPiece();
+                this.cells[piece_index].setPiece(null);
+                this.cells[i].setPiece(piece);
+                return this;
             }
             i++;
         }
@@ -156,25 +190,7 @@ public class State extends Board{
             }
         }
         return actions;
-        //TODO
     }
-
-//    public void Return_to_Start_Square(int piece_index , boolean IsWhite){
-//        if(this.cells[14].isEmpty()){
-//            Piece piece = new Piece(IsWhite);
-//            this.cells[piece_index].setPiece(null);
-//            this.cells[14].setPiece(piece);
-//        }else {
-//            for(int i=13 ; i>=0 ; i--){
-//                if(this.cells[i].isEmpty()){
-//                    Piece piece = new Piece(IsWhite);
-//                    this.cells[piece_index].setPiece(null);
-//                    this.cells[i].setPiece(piece);
-//                    break;
-//                }
-//            }
-//        }
-//    }
 
     //
     public ArrayList<Integer> get_white_pieces(){
@@ -200,15 +216,9 @@ public class State extends Board{
         return positions;
     }
 
-    //
-//    public int where_can_piece_move(){
-//        //TODO
-//    }
 
     //
     public ArrayList<State> generate_next_states(int StickThrow , boolean IsWhite , State parent){
-        //TODO
-
         ArrayList <String> actions =  get_possible_actions(IsWhite , StickThrow);
         ArrayList <State> next_states = new ArrayList<>();
         for (String action:actions) {
@@ -218,7 +228,6 @@ public class State extends Board{
         }
 
         return next_states;
-
     }
 
     //

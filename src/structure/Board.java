@@ -40,7 +40,7 @@ public class Board {
 
     public Cell[] deepcopy_cells(){
         Cell[] new_cells = new Cell[31];
-        for(int i = 1 ; i < 31 ; i++){
+        for(int i = 0 ; i < 30 ; i++){
             new_cells[i] = this.cells[i].deepcopy();
         }
         return new_cells;
@@ -68,7 +68,8 @@ public class Board {
 
     @Override
     public String toString() {
-        String result = "\n========================================== SENET BOARD ============================================" + "\n";
+        String result = "" + "white-score = " + Integer.toString(this.whiteScore) + "\t\t\t" + "black-score = " + Integer.toString(this.blackScore);
+        result += "\n========================================== SENET BOARD ============================================" + "\n";
 
         result += "Row 1 (1-10) :    ";
         for (int i = 0; i < 10; i++) {
@@ -81,6 +82,7 @@ public class Board {
         for (int i = 19; i >= 10; i--) {
             result += (Integer.toString(i+1) + ":" + this.getCell(i).getDisplaySymbol() + " \t");
         }
+//        result += "\t\t\tSticks = " + throwSticks();
         result += "\n";
 
         result += "Row 3 (21-30):    ";
