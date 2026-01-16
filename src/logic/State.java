@@ -76,6 +76,7 @@ public class State extends Board{
         int dest = get_destination_from_string(action);
         return move_piece(piece_index , dest-piece_index);
     }
+
     public boolean is_terminal(){
         int black_pieces = 0;
         int white_pieces = 0;
@@ -93,6 +94,7 @@ public class State extends Board{
         if(white_pieces > 0 || black_pieces > 0) return false;
         return true;
     }
+
 
     // return bool whether is it a legal move or not
     public boolean can_move_piece_to(int piece_index, int steps){
