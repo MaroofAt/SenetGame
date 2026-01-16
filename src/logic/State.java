@@ -70,6 +70,12 @@ public class State extends Board{
 
         return new_state;
     }
+    public State apply_action(String action){
+        int piece_index = get_piece_index_from_string(action);
+        int dest = get_destination_from_string(action);
+        return move_piece(piece_index , dest-piece_index);
+    }
+
 
     // return bool whether is it a legal move or not
     public boolean can_move_piece_to(int piece_index, int steps){
