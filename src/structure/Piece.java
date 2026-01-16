@@ -10,8 +10,15 @@ public class Piece {
     public String getSymbol() {
         return isWhite ? "⚪" : "⚫";
     }
+
+    public boolean isWhite(){
+        return isWhite;
+    }
+    public boolean isBlack(){
+        return !isWhite;
+    }
+
     public boolean getSymbolBool(){
         return isWhite;
     }
-    
 }
