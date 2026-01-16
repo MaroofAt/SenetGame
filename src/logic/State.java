@@ -8,7 +8,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class State extends Board{
-
+    State parent;
     // move
     public State move_piece(int fromIndex, int steps) {
         //TODO
@@ -56,36 +56,35 @@ public class State extends Board{
                 actions.add(i + "," + i + StickResult);
             } else if (this.cells[i].getPiece().getSymbolBool() == IsWhite && i + StickResult == 26) {
 
-                Return_to_Start_Square(i , IsWhite);
+                return_to_start_square(i);
             } else if (this.cells[i].getPiece().getSymbolBool() == IsWhite && i == 27 && StickResult != 3) {
 
-                Return_to_Start_Square(i , IsWhite);
+                return_to_start_square(i);
             } else if (this.cells[i].getPiece().getSymbolBool() == IsWhite && i == 28 && StickResult != 2) {
 
-                Return_to_Start_Square(i , IsWhite);
+                return_to_start_square(i);
             }
         }
         return actions;
         //TODO
     }
 
-    public void Return_to_Start_Square(int piece_index , boolean IsWhite){
-        //TODO Aliiiiiiiiiiiiii
-        if(this.cells[14].isEmpty()){
-            Piece piece = new Piece(IsWhite);
-            this.cells[piece_index].setPiece(null);
-            this.cells[14].setPiece(piece);
-        }else {
-            for(int i=13 ; i>=0 ; i--){
-                if(this.cells[i].isEmpty()){
-                    Piece piece = new Piece(IsWhite);
-                    this.cells[piece_index].setPiece(null);
-                    this.cells[i].setPiece(piece);
-                    break;
-                }
-            }
-        }
-    }
+//    public void Return_to_Start_Square(int piece_index , boolean IsWhite){
+//        if(this.cells[14].isEmpty()){
+//            Piece piece = new Piece(IsWhite);
+//            this.cells[piece_index].setPiece(null);
+//            this.cells[14].setPiece(piece);
+//        }else {
+//            for(int i=13 ; i>=0 ; i--){
+//                if(this.cells[i].isEmpty()){
+//                    Piece piece = new Piece(IsWhite);
+//                    this.cells[piece_index].setPiece(null);
+//                    this.cells[i].setPiece(piece);
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
     //
     public ArrayList<Integer> get_white_pieces(){
@@ -104,8 +103,17 @@ public class State extends Board{
 //    }
 
     //
-    public ArrayList<State> generate_next_states(){
+    public ArrayList<State> generate_next_states(int StickThrow , boolean IsWhite , State parent){
         //TODO
+        ArrayList <String> actions =  get_possible_actions(IsWhite , StickThrow);
+        ArrayList <State> next_states = new ArrayList<>();
+        for (String action:actions) {
+            int from_index = get_piece_index_from_string(action);
+            int steps = get_destination_from_string(action);
+            next_states.add(move_piece(from_index , steps).parent = parent);
+        }
+
+        return next_states;
     }
 
     //
