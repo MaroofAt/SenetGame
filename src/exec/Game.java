@@ -1,17 +1,23 @@
 package exec;
 
 import logic.State;
+import logic.Expectiminimax;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
     int count = 0;
-    State state_class;
+//    State state_class;
 
     public void computer_play(State s){
         int steps = s.throwSticks();
-
+        State next = Expectiminimax.play(s);
+        if(next.is_terminal()){
+            System.out.println("========== COMPUTER WIN ! ==========");
+            return;
+        }
+        Start_Game(next);
 
 
     }
@@ -50,7 +56,7 @@ public class Game {
 
         State next = state.apply_action(actions.get(choice));
         System.out.println(next);
-        if(next.is_terminal){
+        if(next.is_terminal()){
             System.out.println("============== HUMAN WIN ==============");
         }
         else{
