@@ -37,8 +37,9 @@ public class Game {
             }
         }
         int steps = state.throwSticks();
+        System.out.println("sticks = " + steps);
         ArrayList <String> actions = state.get_possible_actions(is_Human_turn(), steps);
-        System.out.println("Choose Move :");
+        System.out.println("\nChoose Move :");
 
         for (int i=0 ; i<actions.size() ; i++){
             System.out.println("["+(i+1)+"]- "+ actions.get(i));
@@ -48,9 +49,11 @@ public class Game {
             choice = scanner.nextInt() - 1;
         }while (choice > actions.size()-1 || choice < 0);
 
-        State next = state.apply_action(actions.get(choice));
+        State next = state.apply_action(
+                state.correct_action( actions.get(choice) )
+        );
         System.out.println(next);
-        if(next.is_terminal){
+        if(next.is_terminal()){
             System.out.println("============== HUMAN WIN ==============");
         }
         else{
@@ -58,6 +61,5 @@ public class Game {
         }
 
     }
-
 
 }
