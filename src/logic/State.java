@@ -176,22 +176,24 @@ public class State extends Board{
         ArrayList <String> actions = new ArrayList();
 
         for (int i = 0; i < 30; i++) {
-            if (this.cells[i].getPiece().getSymbolBool() == IsWhite && can_move_piece_to(i, StickResult)) {
-                actions.add(i + "," + i + StickResult);
-            } else if (this.cells[i].getPiece().getSymbolBool() == IsWhite && i + StickResult == 26) {
-
-                return_to_start_square(i);
-            } else if (this.cells[i].getPiece().getSymbolBool() == IsWhite && i == 27 && StickResult != 3) {
-
-                return_to_start_square(i);
-            } else if (this.cells[i].getPiece().getSymbolBool() == IsWhite && i == 28 && StickResult != 2) {
-
-                return_to_start_square(i);
-            }
+            if(!this.cells[i].isEmpty() && this.cells[i].getPiece().getSymbolBool() == IsWhite && can_move_piece_to(i, StickResult)) {
+                actions.add(i + "," + (i + StickResult));
+            }// else if (!this.cells[i].isEmpty() && this.cells[i].getPiece().getSymbolBool() == IsWhite && i + StickResult == 26) {
+//                return_to_start_square(i);
+//            } else if (!this.cells[i].isEmpty() && this.cells[i].getPiece().getSymbolBool() == IsWhite && i == 27 && StickResult != 3) {
+//                return_to_start_square(i);
+//            } else if (!this.cells[i].isEmpty() && this.cells[i].getPiece().getSymbolBool() == IsWhite && i == 28 && StickResult != 2) {
+//                return_to_start_square(i);
+//            }
         }
         return actions;
     }
 
+    public String correct_action(String action){
+        int from_i = get_piece_index_from_string(action);
+        int to_i = get_destination_from_string(action);
+        return Integer.toString(from_i-1) + "," + Integer.toString(to_i-1);
+    }
     //
     public ArrayList<Integer> get_white_pieces(){
         ArrayList<Integer> positions = new ArrayList<>();
