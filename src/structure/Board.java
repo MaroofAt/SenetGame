@@ -34,6 +34,13 @@ public class Board {
         }
     }
 
+    public int getWhiteScore() {
+        return whiteScore;
+    }
+    public int getBlackScore() {
+        return blackScore;
+    }
+
     public Cell getCell(int number) {
         return cells[number];
     }
