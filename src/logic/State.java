@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class State extends Board{
     State parent;
+    final boolean DEBUG = false;
 
     public State(){super();}
     public State(Cell[] cells){super(cells);}
@@ -24,17 +25,20 @@ public class State extends Board{
         int toIndex = fromIndex + steps;
 
         Cell fromCell = new_state.getCell(fromIndex);
+        if(DEBUG) System.out.println("debug1: fromCell.isEmpty() = " + fromCell.isEmpty());
         if (fromCell.isEmpty()) return null;
 
         Piece movingPiece = fromCell.getPiece();
 
         boolean isWhite = movingPiece.isWhite();
-
+        if(DEBUG) System.out.println("debug2.0: fromIndex > 30 = " + (fromIndex > 30));
         if(toIndex>30){
+            if(DEBUG) System.out.println("debug2.1: fromIndex < 25 = " + (fromIndex < 25));
             if(fromIndex < 25){
                 return null;
             }
             // eat the piece
+            // TODO handle exactly 3 / 2 cells
             fromCell.setPiece(null);
             if(isWhite){
                 this.whiteScore++;
@@ -43,13 +47,16 @@ public class State extends Board{
             }
             return new_state;
         }
+        if(DEBUG) System.out.println("debug2.2");
 
         Cell toCell = new_state.getCell(toIndex);
 
 
         // move the piece now 👇
         fromCell.setPiece(null);
+        if(DEBUG) System.out.println("debug3.0: toCell.isEmpty() = " + toCell.isEmpty());
         if(!toCell.isEmpty()) {
+            if(DEBUG) System.out.println("debug3.1: if(toCell.getPiece().isWhite() == isWhite) return null; ");
             if(toCell.getPiece().isWhite() == isWhite) return null;
             Piece other = toCell.getPiece();
             toCell.setPiece(movingPiece);
@@ -57,18 +64,23 @@ public class State extends Board{
         }else{
             toCell.setPiece(movingPiece);
         }
+        if(DEBUG) System.out.println("debug3.2");
 
         // making sure that the piece belongs to the same player
 //        if(!new_state.cells[25].isEmpty() && toIndex != 25 && (new_state.cells[25].getPiece().isWhite() == isWhite))
 //            new_state = return_to_start_square(new_state,25);
-
+        if(DEBUG) System.out.println("debug4.0: " + (!new_state.cells[27].isEmpty() && toIndex != 27 && (new_state.cells[27].getPiece().isWhite() == isWhite)));
         if(!new_state.cells[27].isEmpty() && toIndex != 27 && (new_state.cells[27].getPiece().isWhite() == isWhite))
             new_state = return_to_start_square(new_state,27);
 
+        if(DEBUG) System.out.println("debug4.1: " + (!new_state.cells[28].isEmpty() && toIndex != 28 && (new_state.cells[28].getPiece().isWhite() == isWhite)));
         if(!new_state.cells[28].isEmpty() && toIndex != 28 && (new_state.cells[28].getPiece().isWhite() == isWhite))
             new_state = return_to_start_square(new_state,28);
 
+        if(DEBUG) System.out.println("debug4.2");
+//        System.out.println("debug5: parent = " + this);
         new_state.parent = this;
+//        System.out.println("debug5: new_state = " + new_state);
         return new_state;
     }
     public State apply_action(String action){
@@ -192,7 +204,7 @@ public class State extends Board{
     public String correct_action(String action){
         int from_i = get_piece_index_from_string(action);
         int to_i = get_destination_from_string(action);
-        return Integer.toString(from_i-1) + "," + Integer.toString(to_i-1);
+        return Integer.toString(from_i+1) + "," + Integer.toString(to_i+1);
     }
     //
     public ArrayList<Integer> get_white_pieces(){
@@ -220,13 +232,15 @@ public class State extends Board{
 
 
     //
-    public ArrayList<State> generate_next_states(int StickThrow , boolean IsWhite , State parent){
+    public ArrayList<State> generate_next_states(int StickThrow , boolean IsWhite){
         ArrayList <String> actions =  get_possible_actions(IsWhite , StickThrow);
         ArrayList <State> next_states = new ArrayList<>();
         for (String action:actions) {
             int from_index = get_piece_index_from_string(action);
             int steps = get_destination_from_string(action);
-            next_states.add(move_piece(from_index , steps).parent = parent);
+            State next = move_piece(from_index , steps);
+            if(next == null){ if(DEBUG) System.out.println("generate_next_state: state is null; state_parent: \n" + this);}
+            else next_states.add(next);
         }
 
         return next_states;

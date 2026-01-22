@@ -12,7 +12,7 @@ public class Game {
 
     public void computer_play(State s){
         int steps = s.throwSticks();
-        State next = Expectiminimax.play(s);
+        State next = Expectiminimax.play(s, steps, 3, true);
         if(next.is_terminal()){
             System.out.println("========== COMPUTER WIN ! ==========");
             return;
@@ -48,7 +48,7 @@ public class Game {
         System.out.println("\nChoose Move :");
 
         for (int i=0 ; i<actions.size() ; i++){
-            System.out.println("["+(i+1)+"]- "+ actions.get(i));
+            System.out.println("["+(i+1)+"]- "+ state.correct_action(actions.get(i)));
         }
         int choice;
         do {
@@ -56,7 +56,7 @@ public class Game {
         }while (choice > actions.size()-1 || choice < 0);
 
         State next = state.apply_action(
-                state.correct_action( actions.get(choice) )
+                actions.get(choice)
         );
         System.out.println(next);
         if(next.is_terminal()){
