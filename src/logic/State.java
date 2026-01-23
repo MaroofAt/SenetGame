@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class State extends Board{
     State parent;
+    public String Action = null;
     final boolean DEBUG = false;
 
     public State(){super();}
@@ -20,7 +21,8 @@ public class State extends Board{
 
         Cell[] new_cells = this.deepcopy_cells(); //deepcopy
         State new_state = new State(new_cells);
-
+        new_state.whiteScore = this.whiteScore;
+        new_state.blackScore = this.blackScore;
 
         int toIndex = fromIndex + steps;
 
@@ -31,20 +33,20 @@ public class State extends Board{
         Piece movingPiece = fromCell.getPiece();
 
         boolean isWhite = movingPiece.isWhite();
-        if(DEBUG) System.out.println("debug2.0: fromIndex > 30 = " + (fromIndex > 30));
-        if(toIndex>30){
+        if(DEBUG) System.out.println("debug2.0: fromIndex > 29 = " + (fromIndex > 29));
+        if(toIndex>29){
             if(DEBUG) System.out.println("debug2.1: fromIndex < 25 = " + (fromIndex < 25));
             if(fromIndex < 25){
                 return null;
             }
             // eat the piece
-            // TODO handle exactly 3 / 2 cells
             fromCell.setPiece(null);
             if(isWhite){
-                this.whiteScore++;
+                new_state.whiteScore++;
             }else{
-                this.blackScore++;
+                new_state.blackScore++;
             }
+            new_state.Action = fromIndex + "," + (fromIndex+steps);
             return new_state;
         }
         if(DEBUG) System.out.println("debug2.2");
@@ -77,10 +79,34 @@ public class State extends Board{
         if(!new_state.cells[28].isEmpty() && toIndex != 28 && (new_state.cells[28].getPiece().isWhite() == isWhite))
             new_state = return_to_start_square(new_state,28);
 
+        if(!new_state.cells[29].isEmpty() && toIndex != 29 && (new_state.cells[29].getPiece().isWhite() == isWhite))
+            new_state = return_to_start_square(new_state,29);
+
         if(DEBUG) System.out.println("debug4.2");
 //        System.out.println("debug5: parent = " + this);
         new_state.parent = this;
+        new_state.Action = fromIndex + "," + (fromIndex+steps);
 //        System.out.println("debug5: new_state = " + new_state);
+        return new_state;
+    }
+    public State search_for_returns_and_return_to_start_square(State state, boolean isWhite){
+        Cell[] cells = state.deepcopy_cells();
+        State new_state = new State(cells);
+        new_state.whiteScore = state.whiteScore;
+        new_state.blackScore = state.blackScore;
+        new_state.Action = state.Action;
+        new_state.parent = state.parent;
+
+//        System.out.println("\n\nHERE....\n\n");
+        if(!new_state.cells[27].isEmpty() && (new_state.cells[27].getPiece().isWhite() == isWhite))
+            new_state = return_to_start_square(new_state,27);
+
+        if(!new_state.cells[28].isEmpty() && (new_state.cells[28].getPiece().isWhite() == isWhite))
+            new_state = return_to_start_square(new_state,28);
+
+        if(!new_state.cells[29].isEmpty() && (new_state.cells[29].getPiece().isWhite() == isWhite))
+            new_state = return_to_start_square(new_state,29);
+
         return new_state;
     }
     public State apply_action(String action){
@@ -90,6 +116,9 @@ public class State extends Board{
     }
 
     public boolean is_terminal(){
+        if(this.whiteScore == 7) return true;
+        else if(this.blackScore == 7) return true;
+
         int black_pieces = 0;
         int white_pieces = 0;
         for(Cell cell: this.cells){
@@ -111,11 +140,13 @@ public class State extends Board{
     // return bool whether is it a legal move or not
     public boolean can_move_piece_to(int piece_index, int steps){
 //        if (this.cells[piece_index].isEmpty()) return false;
-        if (piece_index+steps > 29) return false;
-        else if (!cells[piece_index+steps].isEmpty() && cells[piece_index+steps].getPiece().getSymbol() == cells[piece_index].getPiece().getSymbol()) return false;
-        else if (piece_index < 25 && piece_index+steps > 25) return false;
+//        if (piece_index >= 25 && piece_index != 26 && (piece_index+steps > 29)) return true;
+        if (piece_index < 25 && piece_index+steps > 25) return false;
         else if (piece_index == 27 && steps != 3) return false;
         else if (piece_index == 28 && steps != 2) return false;
+        else if (piece_index == 26) return false;
+        else if (piece_index >= 25 && (piece_index+steps > 29)) return true;
+        else if (!cells[piece_index+steps].isEmpty() && cells[piece_index+steps].getPiece().getSymbol() == cells[piece_index].getPiece().getSymbol()) return false;
         else if (!cells[piece_index+steps].isEmpty() && cells[piece_index+steps].getPiece().getSymbol() != cells[piece_index].getPiece().getSymbol()) return true;
         else if (this.cells[piece_index+steps].isEmpty()) return true;
         return true;
@@ -188,8 +219,17 @@ public class State extends Board{
         ArrayList <String> actions = new ArrayList();
 
         for (int i = 0; i < 30; i++) {
-            if(!this.cells[i].isEmpty() && this.cells[i].getPiece().getSymbolBool() == IsWhite && can_move_piece_to(i, StickResult)) {
-                actions.add(i + "," + (i + StickResult));
+            if(!this.cells[i].isEmpty() && this.cells[i].getPiece().getSymbolBool() == IsWhite) {
+//                if((i > 26 || i == 25) && (i+StickResult > 29)) actions.add(i + "," + 30);
+                if(i+StickResult > 29){
+                    if(i < 25) continue;
+                    else if(i == 26) continue;
+                    else if(i == 27 && StickResult == 3) actions.add(i + "," + (i + StickResult));
+                    else if(i == 28 && StickResult == 2) actions.add(i + "," + (i + StickResult));
+                    else if(i == 29) actions.add(i + "," + (i + StickResult));
+                    else continue;
+                }
+                else if(can_move_piece_to(i, StickResult)) actions.add(i + "," + (i + StickResult));
             }// else if (!this.cells[i].isEmpty() && this.cells[i].getPiece().getSymbolBool() == IsWhite && i + StickResult == 26) {
 //                return_to_start_square(i);
 //            } else if (!this.cells[i].isEmpty() && this.cells[i].getPiece().getSymbolBool() == IsWhite && i == 27 && StickResult != 3) {
@@ -220,8 +260,11 @@ public class State extends Board{
 
     //
     public ArrayList<Integer> get_black_pieces(){
+        if(DEBUG) System.out.println("get_black_pieces: \n" + this);
         ArrayList<Integer> positions = new ArrayList<>();
+
         for(int i = 0 ; i < this.cells.length ; i++){
+            if(DEBUG) System.out.println(cells[i].getPiece());
             if(!this.cells[i].isEmpty()){
                 if(this.cells[i].getPiece().isBlack())
                     positions.add(i);
@@ -237,7 +280,7 @@ public class State extends Board{
         ArrayList <State> next_states = new ArrayList<>();
         for (String action:actions) {
             int from_index = get_piece_index_from_string(action);
-            int steps = get_destination_from_string(action);
+            int steps = get_destination_from_string(action)-from_index;
             State next = move_piece(from_index , steps);
             if(next == null){ if(DEBUG) System.out.println("generate_next_state: state is null; state_parent: \n" + this);}
             else next_states.add(next);
