@@ -2,11 +2,14 @@ package exec;
 
 import logic.State;
 import logic.Expectiminimax;
+import structure.Board;
 
+import java.lang.management.BufferPoolMXBean;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
+    Boolean ok ;
     int count = 0;
 //    State state_class;
 
@@ -17,8 +20,8 @@ public class Game {
         }catch (Exception e){
             e.printStackTrace();
         }
-        Scanner scan = new Scanner(System.in);
-        int steps = scan.nextInt();//s.throwSticks();
+//        Scanner scan = new Scanner(System.in);
+        int steps =s.throwSticks(); //scan.nextInt();
         System.out.println("Throwing sticks...");
         try {
             Thread.sleep(300);
@@ -26,7 +29,7 @@ public class Game {
             e.printStackTrace();
         }
         System.out.println("sticks = " + steps);
-        State next = Expectiminimax.play(s, steps, 3, true);
+        State next = Expectiminimax.play(s, steps, 3, true , ok);
 //        if(s.getBlackScore() ==7){
 //            System.out.println("========== COMPUTER WIN ! ==========");
 //            return;

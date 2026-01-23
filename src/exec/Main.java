@@ -29,7 +29,17 @@ public class Main {
 //            }
 //        }
 //        System.out.println(state);
+        Scanner cin = new Scanner(System.in);
+        System.out.println("Do you want to se the Algorithm ? (Y/N)  ");
+        char c = cin.next().charAt(0);
+        boolean ok ;
+        if(c == 'y' || c== 'Y'){
+            ok = true;
+        }else {
+            ok = false;
+        }
         Game game = new Game();
+        game.ok = ok;
         State s = new State();
 //        Cell[] cells = s.deepcopy_cells();
 //
