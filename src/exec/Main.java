@@ -2,6 +2,7 @@ package exec;
 
 import structure.Board;
 import logic.State;
+import structure.Cell;
 
 import java.util.Scanner;
 
@@ -29,7 +30,19 @@ public class Main {
 //        }
 //        System.out.println(state);
         Game game = new Game();
-        game.Start_Game(new State());
+        State s = new State();
+//        Cell[] cells = s.deepcopy_cells();
+//
+//
+//        cells[1].setPiece(null);
+//        cells[3].setPiece(null);
+//        cells[5].setPiece(null);
+//        cells[7].setPiece(null);
+//        cells[9].setPiece(null);
+//        cells[11].setPiece(null);
+//        s = new State(cells);
+//        s.setBlackScore(6);
+        game.Start_Game(s);
 //        System.out.println("structure.Board initialized successfully!");
     }
 }

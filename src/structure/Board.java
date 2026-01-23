@@ -40,13 +40,19 @@ public class Board {
     public int getBlackScore() {
         return blackScore;
     }
+    public void setWhiteScore(int whiteScore) {
+        this.whiteScore = whiteScore;
+    }
+    public void setBlackScore(int blackScore) {
+        this.blackScore = blackScore;
+    }
 
     public Cell getCell(int number) {
         return cells[number];
     }
 
     public Cell[] deepcopy_cells(){
-        Cell[] new_cells = new Cell[31];
+        Cell[] new_cells = new Cell[30];
         for(int i = 0 ; i < 30 ; i++){
             new_cells[i] = this.cells[i].deepcopy();
         }
