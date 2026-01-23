@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Expectiminimax {
+
+
+    static boolean ok;
     final static boolean DEBUG = false;
     final static int SKIP_LOAD = 6;
     static class BestMove{
@@ -18,7 +21,8 @@ public class Expectiminimax {
             this.state = state;
         }
     }
-    public static State play(State s, int steps, int depth, boolean isMaxPlayer){
+    public static State play(State s, int steps, int depth, boolean isMaxPlayer , boolean ok ){
+        Expectiminimax.ok = ok;
         return expectimax(s,steps,depth,isMaxPlayer).state;
     }
     public static BestMove expectimax(State s, int steps, int depth, boolean isMaxPlayer){
@@ -39,8 +43,11 @@ public class Expectiminimax {
 
             for(State child_s: s.generate_next_states(steps, false)){
                 if (DEBUG) System.out.println("next_states: child_s: \n" + child_s);
-                BestMove new_best = chance(child_s,depth-1, isMaxPlayer);
 
+                BestMove new_best = chance(child_s,depth-1, isMaxPlayer);
+                if(ok){
+                    System.out.println(new_best.value + "\n" + best.state);
+                }
                 best.value = Math.max(best.value , new_best.value);
 
                 if(new_best.value == best.value) best = new_best;
@@ -56,8 +63,11 @@ public class Expectiminimax {
             }
             for(State child_s: s.generate_next_states(steps, true)){
                 if (DEBUG) System.out.println("next_states: child_s: \n" + child_s);
-                BestMove new_best = chance(child_s,depth-1, isMaxPlayer);
 
+                BestMove new_best = chance(child_s,depth-1, isMaxPlayer);
+                if(ok){
+                    System.out.println(new_best.value + "\n" + best.state);
+                }
                 best.value = Math.min(best.value , new_best.value);
 
                 if(new_best.value == best.value) best = new_best;
